@@ -21,3 +21,11 @@ Source the file and execute it:
 source ~/.zshrc
 sb
 ```
+
+## Run
+```
+# today
+sb
+# three days ago
+sb 3 
+```
