@@ -1,12 +1,18 @@
-#!/bin/sh
+#!/bin/bash
+offset="${1:-0}"
+os=$(uname -s)
 
-date_res=$(date)
-arr=($date_res)
+if [ "$os" = "Darwin" ] 
+   then date_obj=$(date -v-"${offset}"d)
+   else date_obj=$(date -d "${offset} days ago")
+fi
+
+read -ra arr <<< "$date_obj"
 date_part="${arr[0]} ${arr[1]} ${arr[2]}"
 
 # ---- Function ----
 Extract () {
-   ext_res=$($1 | grep -o "${date_part} \d\d:\d\d")
+   ext_res=$($1 | tr -s ' ' | grep -o "${date_part} [[:digit:]][[:digit:]]:[[:digit:]][[:digit:]]")
 }
 
 # --- Extraction logic ----
@@ -19,6 +25,7 @@ last_shutdowns=$ext_res
 
 # ---- OUTPUT ----
 
+echo "${date_part}"
 echo "---------"
 echo "Boots"
 echo "${last_reboots}"
